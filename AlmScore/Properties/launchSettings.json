@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AlmScore (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AlmScore (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
