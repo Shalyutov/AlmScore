@@ -13,8 +13,17 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="4">
         <local:ScoreControl x:Name="sc1"/>
+        <local:ScoreControl x:Name="sc2"/>
+        <local:ScoreControl x:Name="sc3"/>
+        <local:ScoreControl x:Name="sc4"/>
+        <local:ScoreControl x:Name="sc5"/>
+        <local:ScoreControl x:Name="sc6"/>
+        <local:ScoreControl x:Name="sc7"/>
+        <local:ScoreControl x:Name="sc8"/>
+        <local:ScoreControl x:Name="sc9"/>
+        <local:ScoreControl x:Name="sc10"/>
         <Button Content="Старт" Click="Button_Click"/>
     </StackPanel>
 </Window>

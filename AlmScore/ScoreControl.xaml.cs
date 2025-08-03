@@ -25,8 +25,9 @@ namespace AlmScore
             InitializeComponent();
         }
 
-        public void AnimateReveal()
+        public void AnimateReveal(int place)
         {
+            Reveal.BeginTime = new TimeSpan(0, 0, 0, 0, place * 100);
             Reveal.Begin();
         }
     }

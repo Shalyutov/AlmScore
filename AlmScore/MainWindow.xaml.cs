@@ -31,7 +31,12 @@ namespace AlmScore
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            sc1.AnimateReveal();
+            int i = 0;
+            foreach (var item in new List<ScoreControl>() { sc1, sc2, sc3, sc4, sc5, sc6, sc7, sc8, sc9, sc10 })
+            {
+                item.AnimateReveal(i);
+                i++;
+            }
         }
     }
 }
