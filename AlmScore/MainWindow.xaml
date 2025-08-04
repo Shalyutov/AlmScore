@@ -14,16 +14,25 @@
     </Window.SystemBackdrop>
 
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="4">
-        <local:ScoreControl x:Name="sc1"/>
-        <local:ScoreControl x:Name="sc2"/>
-        <local:ScoreControl x:Name="sc3"/>
-        <local:ScoreControl x:Name="sc4"/>
-        <local:ScoreControl x:Name="sc5"/>
-        <local:ScoreControl x:Name="sc6"/>
-        <local:ScoreControl x:Name="sc7"/>
-        <local:ScoreControl x:Name="sc8"/>
-        <local:ScoreControl x:Name="sc9"/>
-        <local:ScoreControl x:Name="sc10"/>
-        <Button Content="Старт" Click="Button_Click"/>
+        <ItemsRepeater x:Name="RatingList" ItemsSource="{x:Bind RatingItems}">
+            <ItemsRepeater.Transitions>
+                <TransitionCollection>
+                    <ReorderThemeTransition/>
+                    <RepositionThemeTransition/>
+                </TransitionCollection>
+            </ItemsRepeater.Transitions>
+            
+            <ItemsRepeater.Layout>
+                <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="13" MinRowSpacing="4" MinColumnSpacing="4"/>
+            </ItemsRepeater.Layout>
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate x:DataType="local:RatingItem">
+                    <local:ScoreControl Rating="{x:Bind}"/>
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+        <Border Margin="16"/>
+        <Button Content="Старт" Click="Button_Click" />
+        <Button Content="Баллы" Click="Button_Click2" />
     </StackPanel>
 </Window>
