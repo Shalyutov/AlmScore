@@ -14,23 +14,32 @@
     </Window.SystemBackdrop>
 
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="4">
-        <ItemsRepeater x:Name="RatingList" ItemsSource="{x:Bind RatingItems}">
-            <ItemsRepeater.Transitions>
-                <TransitionCollection>
-                    <ReorderThemeTransition/>
-                    <RepositionThemeTransition/>
-                </TransitionCollection>
-            </ItemsRepeater.Transitions>
-            
+        <ItemsRepeater x:Name="RatingList" ItemsSource="{x:Bind RatingItems}" Visibility="Collapsed">
             <ItemsRepeater.Layout>
-                <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="13" MinRowSpacing="4" MinColumnSpacing="4"/>
+                <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="13" MinRowSpacing="4" MinColumnSpacing="4">
+                    
+                </UniformGridLayout>
             </ItemsRepeater.Layout>
-            <ItemsRepeater.ItemTemplate>
-                <DataTemplate x:DataType="local:RatingItem">
-                    <local:ScoreControl Rating="{x:Bind}"/>
+            <ItemsRepeater.ItemTemplate >
+                <DataTemplate x:DataType="local:RatingItem" >
+                    <local:ScoreControl Rating="{x:Bind Mode=OneWay}"/>
                 </DataTemplate>
             </ItemsRepeater.ItemTemplate>
+            
         </ItemsRepeater>
+        <ItemsControl x:Name="ItemsList">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapGrid Orientation="Vertical" MaximumRowsOrColumns="13">
+                        <WrapGrid.ChildrenTransitions>
+                            <TransitionCollection>
+                                <ReorderThemeTransition/>
+                            </TransitionCollection>
+                        </WrapGrid.ChildrenTransitions>
+                    </WrapGrid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
         <Border Margin="16"/>
         <Button Content="Старт" Click="Button_Click" />
         <Button Content="Баллы" Click="Button_Click2" />
