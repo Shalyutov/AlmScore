@@ -47,6 +47,9 @@
     <Content Update="Assets\Fonts\AvantGarde.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\Fonts\AVGARDM_2.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Update="ScoreControl.xaml">

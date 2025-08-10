@@ -24,10 +24,10 @@
                     <CircleEase EasingMode="EaseInOut" />
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="PanelTransform" Storyboard.TargetProperty="TranslateX" From="-600" To="0">
+            <DoubleAnimation Storyboard.TargetName="PanelTransform" Storyboard.TargetProperty="TranslateX" From="-1000" To="0" Duration="0:0:1.50">
                 <DoubleAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>  
             </DoubleAnimation>
         </Storyboard>
         <Storyboard x:Name="Hide">
@@ -42,14 +42,29 @@
         <Canvas.Clip>
             <RectangleGeometry Rect="0 0 300 30"/>
         </Canvas.Clip>
-        <Border Canvas.ZIndex="1" Canvas.Left="0" Canvas.Top="0" Width="600" Height="30">
+        <Border Canvas.ZIndex="0" Canvas.Left="0" Canvas.Top="0" Width="1000" Height="30">
             <Border.RenderTransform>
                 <CompositeTransform x:Name="PanelTransform"/>
             </Border.RenderTransform>
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                     <GradientStop Offset="0" Color="Indigo"/>
+                    <GradientStop Offset="0.23" Color="Indigo"/>
+                    <GradientStop Offset="0.3" Color="Purple"/>
                     <GradientStop Offset="0.6" Color="Blue"/>
+                    <GradientStop Offset="0.8" Color="DeepSkyBlue"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border Canvas.ZIndex="1" Canvas.Left="0" Canvas.Top="0" Width="1000" Height="30" Visibility="Collapsed">
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="PanelPointsTransform"/>
+            </Border.RenderTransform>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Offset="0" Color="Transparent"/>
+                    <GradientStop Offset="0.6" Color="DeepSkyBlue"/>
                     <GradientStop Offset="1" Color="Transparent"/>
                 </LinearGradientBrush>
             </Border.Background>
@@ -57,18 +72,33 @@
         <Grid Canvas.ZIndex="2" Canvas.Left="0" Canvas.Top="0" Width="300" Height="30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="CountryLabel" Grid.Column="0" FontFamily="/Assets/Fonts/AvantGarde.ttf#AvantGarde" FontWeight="Bold" Text="{x:Bind Rating.Participant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0" Foreground="White">
                 <TextBlock.RenderTransform>
                     <CompositeTransform x:Name="CountryLabelTransform"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
-            <TextBlock Grid.Column="1" FontFamily="/Assets/Fonts/AvantGarde.ttf#AvantGarde" FontWeight="Bold" Text="{x:Bind Rating.Points, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0" Foreground="White">
+            <TextBlock Grid.Column="1" FontFamily="/Assets/Fonts/AVGARDM_2.TTF#AvantGarde Md BT" FontWeight="Bold" Text="{x:Bind Rating.Points, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" Margin="0,0" Foreground="White">
                 <TextBlock.RenderTransform>
                     <CompositeTransform x:Name="PointsLabelTransform"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
         </Grid>
+        <Border Canvas.ZIndex="3" Canvas.Left="215" Canvas.Top="0" Width="40" Height="30">
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="MarkPanelTransform"/>
+            </Border.RenderTransform>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="-29,0" EndPoint="30,0" Opacity="0.75">
+                    <GradientStop Offset="0" Color="Transparent" />
+                    <GradientStop Offset="0.48" Color="Black"/>
+                    <GradientStop Offset="0.5" Color="DeepSkyBlue"/>
+                    <GradientStop Offset="0.52" Color="Black"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock FontFamily="/Assets/Fonts/AVGARDM_2.TTF#AvantGarde Md BT" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Text="12" Foreground="White"/>
+        </Border>
     </Canvas>
 </UserControl>
