@@ -60,5 +60,10 @@ namespace AlmScore
         {
             Hide.Begin();
         }
+
+        public void AnimateReceive()
+        {
+            Receive.Begin();
+        }
     }
 }

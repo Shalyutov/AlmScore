@@ -80,7 +80,7 @@ namespace AlmScore
             int place = 0;
             foreach (ScoreControl item in ItemsList.Items)
             {
-                item.AnimateReveal(place);
+                item.AnimateReveal(place % 13 + place / 13 * 5);
                 place++;
             }
 
@@ -90,21 +90,17 @@ namespace AlmScore
                 (element as ScoreControl)?.AnimateReveal(j);
             }*/
         }
+
+        
         private async void Button_Click2(object sender, RoutedEventArgs e)
         {
             int i = rand.Next(0, 26);
             int amount = rand.Next(1, 100);
-            while (amount > 0) {
-                if (amount / 2 == 0) {
-                    RatingItems[i].Points += amount;
-                    break;
-                }
-                RatingItems[i].Points += amount / 2;
-                amount -= amount / 2;
-                await Task.Delay(20);
-            }
-            
+            RatingItems[i].AddPointsAnimate(amount);
+            (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
 
+
+            await Task.Delay(3000);
             int oldIndex = i;
             int offset = 1;
             bool moved = false;

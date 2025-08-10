@@ -11,6 +11,7 @@ namespace AlmScore
     {
         private string _participant;
         private int _points;
+        private int _delta;
         public string Participant
         {
             get => _participant;
@@ -36,11 +37,43 @@ namespace AlmScore
             }
         }
 
+        public int Delta
+        {
+            get => _delta;
+            set
+            {
+                if (_delta != value)
+                {
+                    _delta = value;
+                    OnPropertyChanged(nameof(Delta));
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public async void AddPointsAnimate(int points)
+        {
+            Delta = points;
+            await Task.Delay(2000);
+
+            int amount = points;
+            while (amount > 0)
+            {
+                if (amount / 2 == 0)
+                {
+                    Points += amount;
+                    break;
+                }
+                Points += amount / 2;
+                amount -= amount / 2;
+                await Task.Delay(20);
+            }
         }
     }
 }

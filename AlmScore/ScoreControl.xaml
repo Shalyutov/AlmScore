@@ -16,7 +16,7 @@
             </DoubleAnimation>
             <DoubleAnimation Storyboard.TargetName="CountryLabel" Storyboard.TargetProperty="Opacity" From="0" To="100">
                 <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseInOut" />
+                    <CircleEase EasingMode="EaseOut" />
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
             <DoubleAnimation Storyboard.TargetName="PointsLabelTransform" Storyboard.TargetProperty="TranslateX" From="30" To="0">
@@ -37,6 +37,18 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+        <Storyboard x:Name="Receive">
+            <DoubleAnimation Storyboard.TargetName="MarkPanel" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.30">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MarkLabelTransform" Storyboard.TargetProperty="TranslateY" From="30" To="0" Duration="0:0:0.20">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </UserControl.Resources>
     <Canvas x:Name="Root" Width="300" Height="30">
         <Canvas.Clip>
@@ -50,7 +62,7 @@
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                     <GradientStop Offset="0" Color="Indigo"/>
                     <GradientStop Offset="0.23" Color="Indigo"/>
-                    <GradientStop Offset="0.3" Color="Purple"/>
+                    <GradientStop Offset="0.27" Color="Purple"/>
                     <GradientStop Offset="0.6" Color="Blue"/>
                     <GradientStop Offset="0.8" Color="DeepSkyBlue"/>
                     <GradientStop Offset="1" Color="Transparent"/>
@@ -64,7 +76,7 @@
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                     <GradientStop Offset="0" Color="Transparent"/>
-                    <GradientStop Offset="0.6" Color="DeepSkyBlue"/>
+                    <GradientStop Offset="0.5" Color="DeepSkyBlue"/>
                     <GradientStop Offset="1" Color="Transparent"/>
                 </LinearGradientBrush>
             </Border.Background>
@@ -74,23 +86,23 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="CountryLabel" Grid.Column="0" FontFamily="/Assets/Fonts/AvantGarde.ttf#AvantGarde" FontWeight="Bold" Text="{x:Bind Rating.Participant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0" Foreground="White">
+            <TextBlock x:Name="CountryLabel" Grid.Column="0" FontFamily="/Assets/Fonts/avantgarde_demi.ttf#ITC Avant Garde Gothic Demi" FontWeight="Bold" Text="{x:Bind Rating.Participant, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0" Foreground="White">
                 <TextBlock.RenderTransform>
                     <CompositeTransform x:Name="CountryLabelTransform"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
-            <TextBlock Grid.Column="1" FontFamily="/Assets/Fonts/AVGARDM_2.TTF#AvantGarde Md BT" FontWeight="Bold" Text="{x:Bind Rating.Points, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" Margin="0,0" Foreground="White">
+            <TextBlock Grid.Column="1" FontFamily="/Assets/Fonts/avantgarde_demi.ttf#ITC Avant Garde Gothic Demi" FontWeight="Bold" Text="{x:Bind Rating.Points, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" Margin="0,0" Foreground="White">
                 <TextBlock.RenderTransform>
                     <CompositeTransform x:Name="PointsLabelTransform"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
         </Grid>
-        <Border Canvas.ZIndex="3" Canvas.Left="215" Canvas.Top="0" Width="40" Height="30">
+        <Border x:Name="MarkPanel" Canvas.ZIndex="3" Canvas.Left="215" Canvas.Top="0" Width="40" Height="30" Opacity="0">
             <Border.RenderTransform>
                 <CompositeTransform x:Name="MarkPanelTransform"/>
             </Border.RenderTransform>
             <Border.Background>
-                <LinearGradientBrush StartPoint="-29,0" EndPoint="30,0" Opacity="0.75">
+                <LinearGradientBrush StartPoint="-31,0" EndPoint="32,0" Opacity="0.6">
                     <GradientStop Offset="0" Color="Transparent" />
                     <GradientStop Offset="0.48" Color="Black"/>
                     <GradientStop Offset="0.5" Color="DeepSkyBlue"/>
@@ -98,7 +110,11 @@
                     <GradientStop Offset="1" Color="Transparent"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <TextBlock FontFamily="/Assets/Fonts/AVGARDM_2.TTF#AvantGarde Md BT" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Text="12" Foreground="White"/>
+            <TextBlock FontFamily="/Assets/Fonts/avantgarde_demi.ttf#ITC Avant Garde Gothic Demi" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind Rating.Delta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="White">
+                <TextBlock.RenderTransform>
+                    <CompositeTransform x:Name="MarkLabelTransform"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
         </Border>
     </Canvas>
 </UserControl>
