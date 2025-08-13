@@ -65,5 +65,10 @@ namespace AlmScore
         {
             Receive.Begin();
         }
+        public void AnimateReceivePoints()
+        {
+            RevealPoints.Begin();
+            Root.Opacity = 1;
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AlmScore
 {
-    public class RatingItem : INotifyPropertyChanged
+    public class RatingItem : INotifyPropertyChanged, IEquatable<RatingItem>
     {
         private string _participant;
         private int _points;
@@ -74,6 +74,11 @@ namespace AlmScore
                 amount -= amount / 2;
                 await Task.Delay(20);
             }
+        }
+
+        public bool Equals(RatingItem? other)
+        {
+            return this.Participant == other?.Participant;
         }
     }
 }

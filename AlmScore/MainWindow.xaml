@@ -16,16 +16,13 @@
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="4">
         <ItemsRepeater x:Name="RatingList" ItemsSource="{x:Bind RatingItems}" Visibility="Collapsed">
             <ItemsRepeater.Layout>
-                <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="13" MinRowSpacing="4" MinColumnSpacing="4">
-                    
-                </UniformGridLayout>
+                <UniformGridLayout Orientation="Vertical" MaximumRowsOrColumns="13" MinRowSpacing="4" MinColumnSpacing="4"/>
             </ItemsRepeater.Layout>
             <ItemsRepeater.ItemTemplate >
                 <DataTemplate x:DataType="local:RatingItem" >
                     <local:ScoreControl Rating="{x:Bind Mode=OneWay}"/>
                 </DataTemplate>
             </ItemsRepeater.ItemTemplate>
-            
         </ItemsRepeater>
         <ItemsControl x:Name="ItemsList">
             <ItemsControl.ItemsPanel>

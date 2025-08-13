@@ -27,7 +27,7 @@
             <DoubleAnimation Storyboard.TargetName="PanelTransform" Storyboard.TargetProperty="TranslateX" From="-1000" To="0" Duration="0:0:1.50">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
-                </DoubleAnimation.EasingFunction>  
+                </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
         <Storyboard x:Name="Hide">
@@ -49,12 +49,49 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+        <Storyboard x:Name="RevealPoints">
+            <DoubleAnimation Storyboard.TargetName="CountryLabelTransform" Storyboard.TargetProperty="TranslateY" From="30" To="0">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="CountryLabel" Storyboard.TargetProperty="Opacity" From="0" To="100">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PointsLabelTransform" Storyboard.TargetProperty="TranslateX" From="30" To="0">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PanelTransform" Storyboard.TargetProperty="TranslateX" From="-1000" To="0" Duration="0:0:1.50">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PanelPointsTransform" Storyboard.TargetProperty="TranslateX" From="-1000" To="300" Duration="0:0:1.50">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MarkPanel" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.30">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MarkLabelTransform" Storyboard.TargetProperty="TranslateY" From="30" To="0" Duration="0:0:0.20">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </UserControl.Resources>
     <Canvas x:Name="Root" Width="300" Height="30">
         <Canvas.Clip>
             <RectangleGeometry Rect="0 0 300 30"/>
         </Canvas.Clip>
-        <Border Canvas.ZIndex="0" Canvas.Left="0" Canvas.Top="0" Width="1000" Height="30">
+        <Border Canvas.ZIndex="1" Canvas.Left="0" Canvas.Top="0" Width="1000" Height="30">
             <Border.RenderTransform>
                 <CompositeTransform x:Name="PanelTransform"/>
             </Border.RenderTransform>
@@ -69,18 +106,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        <Border Canvas.ZIndex="1" Canvas.Left="0" Canvas.Top="0" Width="1000" Height="30" Visibility="Collapsed">
-            <Border.RenderTransform>
-                <CompositeTransform x:Name="PanelPointsTransform"/>
-            </Border.RenderTransform>
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Offset="0" Color="Transparent"/>
-                    <GradientStop Offset="0.5" Color="DeepSkyBlue"/>
-                    <GradientStop Offset="1" Color="Transparent"/>
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>
+        
         <Grid Canvas.ZIndex="2" Canvas.Left="0" Canvas.Top="0" Width="300" Height="30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -97,9 +123,21 @@
                 </TextBlock.RenderTransform>
             </TextBlock>
         </Grid>
-        <Border x:Name="MarkPanel" Canvas.ZIndex="3" Canvas.Left="215" Canvas.Top="0" Width="40" Height="30" Opacity="0">
+        <Border Canvas.ZIndex="3" Canvas.Left="0" Canvas.Top="0" Width="1000" Height="30">
             <Border.RenderTransform>
-                <CompositeTransform x:Name="MarkPanelTransform"/>
+                <CompositeTransform x:Name="PanelPointsTransform" TranslateX="300"/>
+            </Border.RenderTransform>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Offset="0" Color="Transparent"/>
+                    <GradientStop Offset="0.5" Color="DeepSkyBlue"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border x:Name="MarkPanel" Canvas.ZIndex="4" Canvas.Left="215" Canvas.Top="0" Width="40" Height="30" Opacity="0">
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="MarkPanelTransform" />
             </Border.RenderTransform>
             <Border.Background>
                 <LinearGradientBrush StartPoint="-31,0" EndPoint="32,0" Opacity="0.6">

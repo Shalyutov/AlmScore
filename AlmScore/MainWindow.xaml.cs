@@ -91,57 +91,75 @@ namespace AlmScore
             }*/
         }
 
-        
+        private async void ReorderScoreboard()
+        {
+            var marked = new List<RatingItem>();
+            
+            for (int i = 0; i < RatingItems.Count; i++)
+            {
+                var item = RatingItems[i];
+                if (item.Delta > 0)
+                {
+                    marked.Add(item);
+                    var score = ItemsList.Items[i] as ScoreControl;
+                    score?.AnimateHide();
+
+                    int oldIndex = i;
+                    int offset = 1;
+                    bool moved = false;
+                    while (true)
+                    {
+                        if (oldIndex - offset >= 0)
+                        {
+                            if (RatingItems[oldIndex].Points > RatingItems[oldIndex - offset].Points)
+                            {
+                                offset++;
+                                moved = true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    if (moved)
+                    {
+                        RatingItems.Move(oldIndex, oldIndex - offset + 1);
+                    }
+                }
+            }
+
+            await Task.Delay(500);
+            for (int i = 0; i < RatingItems.Count; i++) {
+                if (marked.Contains(RatingItems[i]))
+                {
+                    var score = ItemsList.Items.First((sc) => { return (sc as ScoreControl)?.Rating == RatingItems[i]; }) as ScoreControl;
+                    ItemsList.Items.Remove(score);
+                    ItemsList.Items.Insert(i, score);
+                    score?.AnimateReceivePoints();
+                }
+            }
+        }
         private async void Button_Click2(object sender, RoutedEventArgs e)
         {
-            int i = rand.Next(0, 26);
-            int amount = rand.Next(1, 100);
-            RatingItems[i].AddPointsAnimate(amount);
-            (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
-
+            int i = 0;
+            foreach (int amount in new List<int>([1,2,3,4,5,6,7,8,10]))
+            {
+                RatingItems[i].AddPointsAnimate(amount);
+                (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
+                i++;
+            }
 
             await Task.Delay(3000);
-            int oldIndex = i;
-            int offset = 1;
-            bool moved = false;
-            while (true)
+            ReorderScoreboard();
+            foreach (RatingItem item in RatingItems)
             {
-                if (oldIndex - offset >= 0)
-                {
-                    if (RatingItems[oldIndex].Points > RatingItems[oldIndex - offset].Points)
-                    {
-                        offset++;
-                        moved = true;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                else 
-                {
-                    break; 
-                }
+                //item.Delta = 0;
             }
-            if (moved)
-            {
-                /*RatingItems.Move(oldIndex, oldIndex - offset + 1);
-                var element = RatingList.GetOrCreateElement(oldIndex) as ScoreControl;
-                element?.AnimateReveal(26);
-                element?.AnimateHide();*/
-
-                RatingItems.Move(oldIndex, oldIndex - offset + 1);
-
-                await Task.Delay(1000);
-                var item = ItemsList.Items[oldIndex];
-                (item as ScoreControl)?.AnimateHide();
-                await Task.Delay(600);
-                ItemsList.Items.RemoveAt(oldIndex);
-                ItemsList.Items.Insert(oldIndex - offset + 1, item);
-                (item as ScoreControl)?.AnimateReveal(0);
-            }
-            
         }
-
     }
 }
