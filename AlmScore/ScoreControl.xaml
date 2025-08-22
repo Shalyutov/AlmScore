@@ -86,6 +86,19 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+        <Storyboard x:Name="HighMark">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="HighMarkLabelTransform" Storyboard.TargetProperty="TranslateY" Duration="0:0:0.5">
+                <DiscreteDoubleKeyFrame Value="30" KeyTime="0:0:0"/>
+                <LinearDoubleKeyFrame Value="30" KeyTime="0:0:0.01"/>
+                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0.5"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="HighMarkPanelTransform" Storyboard.TargetProperty="TranslateX" From="-2000" To="2000" Duration="0:0:5"/>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="HighMarkLabelTransform" Storyboard.TargetProperty="TranslateX" Duration="0:0:2">
+                <DiscreteDoubleKeyFrame Value="0" KeyTime="0:0:0"/>
+                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:1"/>
+                <LinearDoubleKeyFrame Value="300" KeyTime="0:0:2"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
     <Canvas x:Name="Root" Width="300" Height="30">
         <Canvas.Clip>
@@ -153,6 +166,30 @@
                     <CompositeTransform x:Name="MarkLabelTransform"/>
                 </TextBlock.RenderTransform>
             </TextBlock>
+        </Border>
+        <Border Canvas.ZIndex="5" Canvas.Left="0" Canvas.Top="0" Width="2000" Height="30">
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="HighMarkPanelTransform" TranslateX="-2000"/>
+            </Border.RenderTransform>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Offset="0" Color="Transparent"/>
+                    <GradientStop Offset="0.3" Color="Gold"/>
+                    <GradientStop Offset="0.5" Color="Purple"/>
+                    <GradientStop Offset="0.7" Color="Gold"/>
+                    <GradientStop Offset="0.9" Color="Purple"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border Canvas.ZIndex="6" Canvas.Left="0" Canvas.Top="0" Width="300" Height="30">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel.RenderTransform>
+                    <CompositeTransform x:Name="HighMarkLabelTransform" TranslateY="30"/>
+                </StackPanel.RenderTransform>
+                <TextBlock FontFamily="/Assets/Fonts/avantgarde_demi.ttf#ITC Avant Garde Gothic Demi" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" Text="{x:Bind Rating.Delta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="White"/>
+                <TextBlock FontFamily="/Assets/Fonts/avantgarde_demi.ttf#ITC Avant Garde Gothic Demi" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" Text=" БАЛЛОВ" Foreground="White"/>
+            </StackPanel>
         </Border>
     </Canvas>
 </UserControl>

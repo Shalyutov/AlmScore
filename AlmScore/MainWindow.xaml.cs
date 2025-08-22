@@ -146,12 +146,24 @@ namespace AlmScore
         }
         private async void Button_Click2(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (int amount in new List<int>([1,2,3,4,5,6,7,8,10]))
+            int i = rand.Next(0, 26);
+            var r = new List<int>();
+            foreach (int amount in new List<int>([1,2,3,4,5,6,7,8,10,12]))
             {
+                while (r.Contains(i))
+                {
+                    i = rand.Next(0, 26);
+                }
                 RatingItems[i].AddPointsAnimate(amount);
-                (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
-                i++;
+                if (amount == 12)
+                {
+                    (ItemsList.Items[i] as ScoreControl)?.AnimateHighMark();
+                }
+                else
+                {
+                    (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
+                }
+                r.Add(i);
             }
 
             await Task.Delay(3000);

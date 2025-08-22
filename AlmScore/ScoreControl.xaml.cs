@@ -70,5 +70,13 @@ namespace AlmScore
             RevealPoints.Begin();
             Root.Opacity = 1;
         }
+        public async void AnimateHighMark()
+        {
+            //HighMarkLabelTransform.TranslateY = 30;
+            HighMark.Begin();
+            Root.Opacity = 1;
+            await Task.Delay(500);
+            RevealPoints.Begin();
+        }
     }
 }
