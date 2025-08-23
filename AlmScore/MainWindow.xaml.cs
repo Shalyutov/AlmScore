@@ -29,9 +29,13 @@ namespace AlmScore
     {
         Random rand = new Random();
         private ObservableCollection<RatingItem> RatingItems { get; set; } = new();
+        private List<Vote> Votes { get; set; } = new();
+        private List<string> juryOrder = new();
+        private List<string> publicOrder = new();
         public MainWindow()
         {
             InitializeComponent();
+
             RatingItems.Add(new() { Participant = "Россия", Points = 0 });
             RatingItems.Add(new() { Participant = "Беларусь", Points = 0 });
             RatingItems.Add(new() { Participant = "Казахстан", Points = 0 });
@@ -91,6 +95,12 @@ namespace AlmScore
             }*/
         }
 
+        private async void GiveMarksPacket(string participant)
+        {
+            var packet = Votes.FindAll((v) => { return v.Participant == participant; });
+
+        }
+
         private async void ReorderScoreboard()
         {
             var marked = new List<RatingItem>();
@@ -111,7 +121,7 @@ namespace AlmScore
                     {
                         if (oldIndex - offset >= 0)
                         {
-                            if (RatingItems[oldIndex].Points > RatingItems[oldIndex - offset].Points)
+                            if (RatingItems[oldIndex].Points > RatingItems[oldIndex - offset].Points)//todo compare quantity of high marks (eurovision rule)
                             {
                                 offset++;
                                 moved = true;
@@ -146,6 +156,21 @@ namespace AlmScore
         }
         private async void Button_Click2(object sender, RoutedEventArgs e)
         {
+            int h = 0;
+            foreach (var ri in RatingItems)
+            {
+                if (ri.Delta > 0)
+                {
+                    (ItemsList.Items[h] as ScoreControl)?.AnimateHideMark();
+                }
+                h++;
+            }
+            await Task.Delay(1000);
+            foreach (var ri in RatingItems)
+            {
+                ri.Delta = 0;
+            }
+
             int i = rand.Next(0, 26);
             var r = new List<int>();
             foreach (int amount in new List<int>([1,2,3,4,5,6,7,8,10,12]))

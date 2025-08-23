@@ -99,6 +99,10 @@
                 <LinearDoubleKeyFrame Value="300" KeyTime="0:0:2"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Name="HideMark">
+            <DoubleAnimation Storyboard.TargetName="MarkPanel" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.30"/>
+            <DoubleAnimation Storyboard.TargetName="MarkLabelTransform" Storyboard.TargetProperty="TranslateY" From="0" To="30" Duration="0:0:0.20"/>
+        </Storyboard>
     </UserControl.Resources>
     <Canvas x:Name="Root" Width="300" Height="30">
         <Canvas.Clip>
