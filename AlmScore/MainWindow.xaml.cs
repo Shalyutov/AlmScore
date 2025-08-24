@@ -30,75 +30,112 @@ namespace AlmScore
         Random rand = new Random();
         private ObservableCollection<RatingItem> RatingItems { get; set; } = new();
         private List<Vote> Votes { get; set; } = new();
-        private List<string> juryOrder = new();
+        private List<string> juryOrder = new(["Россия","Беларусь"]);
         private List<string> publicOrder = new();
+        private List<string> participants = new(["Россия","Беларусь","Казахстан","Монголия","Армения","Китай","Северная Корея","Узбекистан","Таджикистан","Молдова", 
+        "Сербия","Грузия","Литва","Латвия","Словакия","Недерланды","Германия","Великобритания","Испания","Италия","Греция","Азербайджан","Турция","Мальта","Австрия","Швеция",]);
+        private List<int> marks = new([1, 2, 3, 4, 5, 6, 7, 8, 10, 12]);
+        private List<Vote> currentPacket;
+
+        private bool isPacketGiven = false;
+        private bool isGighMarkGiven = false;
+        private bool isReady = true;
+        private int currentJury = 0;
         public MainWindow()
         {
             InitializeComponent();
 
-            RatingItems.Add(new() { Participant = "Россия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Беларусь", Points = 0 });
-            RatingItems.Add(new() { Participant = "Казахстан", Points = 0 });
-            RatingItems.Add(new() { Participant = "Монголия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Армения", Points = 0 });
-            RatingItems.Add(new() { Participant = "Китай", Points = 0 });
-            RatingItems.Add(new() { Participant = "Северная Корея", Points = 0 });
-            RatingItems.Add(new() { Participant = "Узбекистан", Points = 0 });
-            RatingItems.Add(new() { Participant = "Таджикистан", Points = 0 });
-            RatingItems.Add(new() { Participant = "Молдова", Points = 0 });
-            RatingItems.Add(new() { Participant = "Сербия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Грузия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Литва", Points = 0 });
-            RatingItems.Add(new() { Participant = "Латвия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Словакия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Недерланды", Points = 0 });
-            RatingItems.Add(new() { Participant = "Германия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Великобритания", Points = 0 });
-            RatingItems.Add(new() { Participant = "Испания", Points = 0 });
-            RatingItems.Add(new() { Participant = "Италия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Греция", Points = 0 });
-            RatingItems.Add(new() { Participant = "Азербайджан", Points = 0 });
-            RatingItems.Add(new() { Participant = "Турция", Points = 0 });
-            RatingItems.Add(new() { Participant = "Мальта", Points = 0 });
-            RatingItems.Add(new() { Participant = "Австрия", Points = 0 });
-            RatingItems.Add(new() { Participant = "Швеция", Points = 0 });
+            foreach (string participant in participants)
+            {
+                RatingItems.Add(new() { Participant = participant, Points = 0 });
+            }
 
             foreach (var item in RatingItems)
             {
                 ItemsList.Items.Add(new ScoreControl() { Rating = item, Margin = new Thickness(2) });
             }
+
+            foreach(var mark in marks)
+            {
+                Votes.Add(new() { From = "Россия", Points = mark, Issuer=Vote.VoteIssuer.Jury, To = participants[mark] });
+                Votes.Add(new() { From = "Беларусь", Points = mark, Issuer = Vote.VoteIssuer.Jury, To = participants[mark+4] });
+            }
+            
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            /*RatingItems[1].Points += 100;
-            await Task.Delay(1000);
-            
-            var i = ItemsList.Items[1];
-            (i as ScoreControl)?.AnimateHide();
-            await Task.Delay(500);
-            ItemsList.Items.RemoveAt(1);
-            ItemsList.Items.Insert(0, i);
-            (i as ScoreControl)?.AnimateReveal(0);
-            return;*/
+            RevealRating();
+        }
+        private void Button_Click3(object sender, RoutedEventArgs e)
+        {
+            HideRating();
+        }
+
+        private void RevealRating()
+        {
             int place = 0;
             foreach (ScoreControl item in ItemsList.Items)
             {
                 item.AnimateReveal(place % 13 + place / 13 * 5);
                 place++;
             }
-
-            /*for (int j = 0; j < RatingItems.Count; j++)
+        }
+        private void HideRating()
+        {
+            foreach (ScoreControl item in ItemsList.Items)
             {
-                element = RatingList.GetOrCreateElement(j);
-                (element as ScoreControl)?.AnimateReveal(j);
-            }*/
+                item.AnimateHide();
+            }
+        }
+        private async void LoadMarksPacket(string participant)
+        {
+            foreach (ScoreControl sc in ItemsList.Items)
+            {
+                if (sc.Rating.Delta > 0)
+                {
+                    sc.AnimateHideMark();
+                }
+            }
+            await Task.Delay(1000);
+            foreach (var ri in RatingItems)
+            {
+                ri.Delta = 0;
+            }
+
+            currentPacket = Votes.FindAll((v) => { return v.From == participant && v.Issuer == Vote.VoteIssuer.Jury; });
+            isPacketGiven = false;
+            isGighMarkGiven = false;
         }
 
-        private async void GiveMarksPacket(string participant)
+        private async void GiveMarksPacket()
         {
-            var packet = Votes.FindAll((v) => { return v.Participant == participant; });
+            foreach(Vote vote in currentPacket)
+            {
+                if (vote.Points == marks.Last())
+                {
+                    continue;
+                }
+                var ri = RatingItems.First((ri) => ri.Participant == vote.To);
+                ri.AddPointsAnimate(vote.Points);
+                var i = RatingItems.IndexOf(ri);
+                (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
+            }
+            isPacketGiven = true;
+            await Task.Delay(3000);
+            ReorderScoreboard();
+        }
 
+        private async void GiveHighMark()
+        {
+            Vote? vote = currentPacket.Find((v) => v.Points == marks.Last());
+            var ri = RatingItems.First((ri) => ri.Participant == vote?.To);
+            ri.AddPointsAnimate(vote!.Points);
+            var i = RatingItems.IndexOf(ri);
+            (ItemsList.Items[i] as ScoreControl)?.AnimateHighMark();
+            isGighMarkGiven = true;
+            await Task.Delay(3000);
+            ReorderScoreboard();
         }
 
         private async void ReorderScoreboard()
@@ -156,24 +193,31 @@ namespace AlmScore
         }
         private async void Button_Click2(object sender, RoutedEventArgs e)
         {
-            int h = 0;
-            foreach (var ri in RatingItems)
+            if (isReady)
             {
-                if (ri.Delta > 0)
-                {
-                    (ItemsList.Items[h] as ScoreControl)?.AnimateHideMark();
-                }
-                h++;
+                LoadMarksPacket(juryOrder[currentJury]);
+                isReady = false;
+                return;
             }
-            await Task.Delay(1000);
-            foreach (var ri in RatingItems)
+            if (!isPacketGiven)
             {
-                ri.Delta = 0;
+                GiveMarksPacket();
+                isPacketGiven = true;
+                return;
+            }
+            if (!isGighMarkGiven)
+            {
+                GiveHighMark();
+                isGighMarkGiven = true;
+                isReady = true;
+                currentJury++;
+                return;
             }
 
+            return;
             int i = rand.Next(0, 26);
             var r = new List<int>();
-            foreach (int amount in new List<int>([1,2,3,4,5,6,7,8,10,12]))
+            foreach (int amount in marks)
             {
                 while (r.Contains(i))
                 {
@@ -193,10 +237,6 @@ namespace AlmScore
 
             await Task.Delay(3000);
             ReorderScoreboard();
-            foreach (RatingItem item in RatingItems)
-            {
-                //item.Delta = 0;
-            }
         }
     }
 }

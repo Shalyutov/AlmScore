@@ -38,7 +38,8 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
         <Border Margin="16"/>
-        <Button Content="Старт" Click="Button_Click" />
+        <Button Content="Отобразить" Click="Button_Click" />
+        <Button Content="Скрыть" Click="Button_Click3" />
         <Button Content="Баллы" Click="Button_Click2" />
     </StackPanel>
 </Window>
