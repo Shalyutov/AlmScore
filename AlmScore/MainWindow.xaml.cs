@@ -30,7 +30,7 @@ namespace AlmScore
         Random rand = new Random();
         private ObservableCollection<RatingItem> RatingItems { get; set; } = new();
         private List<Vote> Votes { get; set; } = new();
-        private List<string> juryOrder = new(["Россия","Беларусь"]);
+        private List<string> juryOrder = new(["Россия","Беларусь", "Казахстан"]);
         private List<string> publicOrder = new();
         private List<string> participants = new(["Россия","Беларусь","Казахстан","Монголия","Армения","Китай","Северная Корея","Узбекистан","Таджикистан","Молдова", 
         "Сербия","Грузия","Литва","Латвия","Словакия","Недерланды","Германия","Великобритания","Испания","Италия","Греция","Азербайджан","Турция","Мальта","Австрия","Швеция",]);
@@ -38,7 +38,7 @@ namespace AlmScore
         private List<Vote> currentPacket;
 
         private bool isPacketGiven = false;
-        private bool isGighMarkGiven = false;
+        private bool isHighMarkGiven = false;
         private bool isReady = true;
         private int currentJury = 0;
         public MainWindow()
@@ -59,8 +59,10 @@ namespace AlmScore
             {
                 Votes.Add(new() { From = "Россия", Points = mark, Issuer=Vote.VoteIssuer.Jury, To = participants[mark] });
                 Votes.Add(new() { From = "Беларусь", Points = mark, Issuer = Vote.VoteIssuer.Jury, To = participants[mark+4] });
+                Votes.Add(new() { From = "Казахстан", Points = mark, Issuer = Vote.VoteIssuer.Jury, To = participants[mark + 6] });
             }
-            
+            Votes.Add(new() { From = "NULL", Points = 100, Issuer = Vote.VoteIssuer.Public, To = participants[0] });
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -105,7 +107,7 @@ namespace AlmScore
 
             currentPacket = Votes.FindAll((v) => { return v.From == participant && v.Issuer == Vote.VoteIssuer.Jury; });
             isPacketGiven = false;
-            isGighMarkGiven = false;
+            isHighMarkGiven = false;
         }
 
         private async void GiveMarksPacket()
@@ -133,7 +135,7 @@ namespace AlmScore
             ri.AddPointsAnimate(vote!.Points);
             var i = RatingItems.IndexOf(ri);
             (ItemsList.Items[i] as ScoreControl)?.AnimateHighMark();
-            isGighMarkGiven = true;
+            isHighMarkGiven = true;
             await Task.Delay(3000);
             ReorderScoreboard();
         }
@@ -195,6 +197,10 @@ namespace AlmScore
         {
             if (isReady)
             {
+                if (currentJury > juryOrder.Count)
+                {
+
+                }
                 LoadMarksPacket(juryOrder[currentJury]);
                 isReady = false;
                 return;
@@ -205,38 +211,16 @@ namespace AlmScore
                 isPacketGiven = true;
                 return;
             }
-            if (!isGighMarkGiven)
+            if (!isHighMarkGiven)
             {
                 GiveHighMark();
-                isGighMarkGiven = true;
+                isHighMarkGiven = true;
                 isReady = true;
                 currentJury++;
                 return;
             }
 
             return;
-            int i = rand.Next(0, 26);
-            var r = new List<int>();
-            foreach (int amount in marks)
-            {
-                while (r.Contains(i))
-                {
-                    i = rand.Next(0, 26);
-                }
-                RatingItems[i].AddPointsAnimate(amount);
-                if (amount == 12)
-                {
-                    (ItemsList.Items[i] as ScoreControl)?.AnimateHighMark();
-                }
-                else
-                {
-                    (ItemsList.Items[i] as ScoreControl)?.AnimateReceive();
-                }
-                r.Add(i);
-            }
-
-            await Task.Delay(3000);
-            ReorderScoreboard();
         }
     }
 }
